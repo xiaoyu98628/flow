@@ -1,0 +1,67 @@
+# 忽略当前文件夹下所有文件上传 git
+*
+
+# 排除 app 文件
+!app
+!app/**
+
+# 排除 bootstrap 文件
+!bootstrap
+!bootstrap/**
+
+# 排除 config 文件
+!config
+!config/**
+
+# 排除 database 文件
+!database
+!database/**
+
+# 排除 public 文件
+!public
+!public/**
+
+# 排除 routes 文件
+!routes
+!routes/**
+
+# 排除 storage 文件
+!storage
+!storage/**
+
+# 排除 tests 文件
+!tests
+!tests/**
+
+# 忽略 MacOS 系统特有文件
+.DS_Store
+
+# 排除 .editorconfig 文件
+!.editorconfig
+
+# 排除 .env.example 文件
+!.env.example
+
+# 排除 .gitattributes 文件
+!.gitattributes
+
+# 排除 .gitignore 文件
+!.gitignore
+
+# 排除 artisan 文件
+!artisan
+
+# 排除 composer.json 文件
+!composer.json
+
+# 排除 composer.lock 文件
+!composer.lock
+
+# 排除 phpunit.xml 文件
+!phpunit.xml
+
+# 排除 pint.json 文件
+!pint.json
+
+# 排除 README.md 文件
+!README.md

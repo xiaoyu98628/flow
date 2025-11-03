@@ -4,6 +4,10 @@
 # 忽略 MacOS 系统特有文件
 .DS_Store
 
+# 忽略 service 文件
+!service
+!service/**
+
 # 排除 .gitignore 文件
 !.gitignore
 
