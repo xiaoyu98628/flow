@@ -2,6 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('tests', \App\Http\Controllers\V1\TestController::class)->only(['index']);
