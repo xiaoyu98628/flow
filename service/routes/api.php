@@ -2,4 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::resource('tests', \App\Http\Controllers\V1\TestController::class)->only(['index']);
+Route::group([
+    'prefix' => 'v1',
+], function () {
+    Route::resource('tests', \App\Http\Controllers\V1\TestController::class)->only(['index']);
+});
