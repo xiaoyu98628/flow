@@ -60,6 +60,7 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        // 单文件
         'single' => [
             'driver'               => 'single',
             'path'                 => storage_path('logs/laravel.log'),
@@ -84,6 +85,7 @@ return [
             'replace_placeholders' => true,
         ],
 
+        // 云日志服务
         'papertrail' => [
             'driver'       => 'monolog',
             'level'        => env('LOG_LEVEL', 'debug'),
@@ -96,6 +98,7 @@ return [
             'processors' => [PsrLogMessageProcessor::class],
         ],
 
+        // 标准错误输出
         'stderr' => [
             'driver'       => 'monolog',
             'level'        => env('LOG_LEVEL', 'debug'),
@@ -129,6 +132,12 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'db' => [
+            'driver'               => 'single',
+            'path'                 => storage_path('logs/db.log'),
+            'level'                => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+        ],
     ],
 
 ];
