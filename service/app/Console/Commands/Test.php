@@ -16,17 +16,17 @@ class Test extends Command
     protected $signature = 'app:test';
 
     /**
-     * 加速调试
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Command description';
 
-    public array $data;
-
     /**
      * Execute the console command.
      */
-    public function handle() {}
+    public function handle()
+    {
+        //
+    }
 }

@@ -10,4 +10,9 @@ class TestController extends Controller
     {
         dd(12312313);
     }
+
+    public function store()
+    {
+        dd(133131313131);
+    }
 }
