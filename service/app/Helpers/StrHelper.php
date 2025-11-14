@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 class StrHelper
@@ -14,7 +16,7 @@ class StrHelper
     public static function formatStr(string $str, array $format): string
     {
         return collect($format)->reduce(function ($carry, $value, $key) {
-            return str_replace('{' . $key . '}', $value, $carry);
+            return str_replace('{'.$key.'}', $value, $carry);
         }, $str);
     }
 }
