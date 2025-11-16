@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
-use App\Constants\Response\ClientFailedCode;
 use App\Constants\Response\Code;
+use App\Constants\Response\FailedCode\ClientFailedCode;
+use App\Constants\Response\FailedCode\SuccessCode;
 use App\Constants\Response\ResponseMsg;
 use App\Constants\Response\ShortCode;
-use App\Constants\Response\SuccessCode;
 use Illuminate\Http\JsonResponse;
 
 class ResponseHelper

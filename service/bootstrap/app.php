@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Constants\Response\FailedCode\ClientFailedCode;
+use App\Exceptions\BusinessException;
+use App\Helpers\ResponseHelper;
 use App\Http\Middleware\DecodeRequestMiddleware;
 use App\Http\Middleware\JsonMiddleware;
 use Illuminate\Foundation\Application;
@@ -11,6 +14,7 @@ use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Middleware\TrustHosts;
 use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -34,5 +38,17 @@ return Application::configure(basePath: dirname(__DIR__))
             JsonMiddleware::class,
         ]);
     })->withExceptions(function (Exceptions $exceptions): void {
-        //
+
+        $exceptions->render(function (Exception $exception) {
+            // 路由不存在
+            if ($exception instanceof NotFoundHttpException) {
+                return ResponseHelper::fail(code: ClientFailedCode::NOT_FOUND, data: $exception->getMessage());
+            }
+            // 业务异常
+            if ($exception instanceof BusinessException) {
+                return ResponseHelper::fail(code: $exception->responseCode, message: $exception->responseMessage);
+            }
+
+            return false;
+        });
     })->create();

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Constants\Response;
+namespace App\Constants\Response\FailedCode;
+
+use App\Constants\Response\Code;
 
 enum ClientFailedCode: int implements Code
 {
