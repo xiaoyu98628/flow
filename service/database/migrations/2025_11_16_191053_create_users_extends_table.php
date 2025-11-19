@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users_extends', function (Blueprint $table) {
+        Schema::create('user_extends', function (Blueprint $table) {
             $table->ulid('user_id')->primary();
             $table->dateTime('mobile_verified_at')->nullable()->comment('手机验证时间');
             $table->dateTime('email_verified_at')->nullable()->comment('邮箱验证时间');
@@ -26,6 +26,8 @@ return new class extends Migration
             $table->dateTime('last_login_at')->nullable()->comment('最后一次登陆时间');
             $table->string('last_login_ip', 255)->nullable()->comment('最后一次登录IP');
             $table->string('last_login_city', 255)->nullable()->comment('最后一次登录地址');
+            MigrationHelper::time($table);
+            $table->comment('用户扩展表');
         });
     }
 

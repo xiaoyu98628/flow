@@ -7,24 +7,26 @@ use Illuminate\Database\Schema\Blueprint;
 class MigrationHelper
 {
     /**
+     * 操作者和时间
      * @param  Blueprint  $table
      * @return void
      */
-    public static function createAndAdmin(Blueprint $table): void
+    public static function operatorAndTime(Blueprint $table): void
     {
         $table->dateTime('created_at')->index()->nullable()->comment('创建时间');
-        $table->ulid('created_admin_id')->nullable()->comment('创建者编号');
+        $table->ulid('created_operator_id')->nullable()->comment('创建者编号');
         $table->dateTime('updated_at')->nullable()->comment('更新时间');
-        $table->ulid('updated_admin_id')->nullable()->comment('更新者编号');
+        $table->ulid('updated_operator_id')->nullable()->comment('更新者编号');
         $table->dateTime('deleted_at')->nullable()->comment('删除时间');
-        $table->ulid('deleted_admin_id')->nullable()->comment('删除者编号');
+        $table->ulid('deleted_operator_id')->nullable()->comment('删除者编号');
     }
 
     /**
+     * 时间
      * @param  Blueprint  $table
      * @return void
      */
-    public static function createTime(Blueprint $table): void
+    public static function time(Blueprint $table): void
     {
         $table->dateTime('created_at')->index()->nullable()->comment('创建时间');
         $table->dateTime('updated_at')->nullable()->comment('更新时间');
