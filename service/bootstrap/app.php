@@ -14,6 +14,7 @@ use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Middleware\TrustHosts;
 use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -40,6 +41,11 @@ return Application::configure(basePath: dirname(__DIR__))
     })->withExceptions(function (Exceptions $exceptions): void {
 
         $exceptions->render(function (Exception $exception) {
+
+            // 数据验证
+            if ($exception instanceof ValidationException) {
+                return ResponseHelper::fail(code: ClientFailedCode::CLIENT_PARAMETER_ERROR, data: $exception->errors());
+            }
             // 路由不存在
             if ($exception instanceof NotFoundHttpException) {
                 return ResponseHelper::fail(code: ClientFailedCode::NOT_FOUND, data: $exception->getMessage());
