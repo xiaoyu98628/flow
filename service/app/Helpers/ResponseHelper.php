@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 
 class ResponseHelper
 {
-    public static function success(mixed $data = [], Code $code = SuccessCode::SUCCESS_OK, ?string $message = null): JsonResponse
+    public static function success(mixed $data = null, Code $code = SuccessCode::SUCCESS_OK, ?string $message = null): JsonResponse
     {
         $message = $message ?? ($code == SuccessCode::SUCCESS_OK ? ResponseMsg::from(request()->method())->successMsg() : $code->message());
 
