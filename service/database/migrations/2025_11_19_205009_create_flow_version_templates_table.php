@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Helpers\MigrationHelper;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,9 +23,7 @@ return new class extends Migration
             $table->json('callback')->nullable()->comment('回调');
             $table->json('extend')->nullable()->comment('额外信息');
             MigrationHelper::operatorAndTime($table);
-            $table->unique(['template_id', 'version']);
-            $table->index('flow_template_id');
-            $table->index('version');
+            $table->unique(['flow_template_id', 'version'], 'idx_template_id_version');
             $table->comment('流程模版版本表');
         });
     }
