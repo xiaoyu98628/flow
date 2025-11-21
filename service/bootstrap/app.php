@@ -15,6 +15,8 @@ use Illuminate\Http\Middleware\TrustHosts;
 use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -42,6 +44,14 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (Exception $exception) {
 
+            // 请求方式错误
+            if ($exception instanceof MethodNotAllowedHttpException) {
+                return ResponseHelper::fail(code: ClientFailedCode::CLIENT_METHOD_NOT_ALLOWED_ERROR, message: $exception->getMessage());
+            }
+            // 拒绝访问
+            if ($exception instanceof AccessDeniedHttpException) {
+                return ResponseHelper::fail(code: ClientFailedCode::CLIENT_FORBIDDEN_ERROR, message: $exception->getMessage());
+            }
             // 数据验证
             if ($exception instanceof ValidationException) {
                 return ResponseHelper::fail(code: ClientFailedCode::CLIENT_PARAMETER_ERROR, data: $exception->errors());
