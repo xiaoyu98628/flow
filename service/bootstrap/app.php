@@ -21,12 +21,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        api: __DIR__.'/../routes/api.php',
+        using: function () {
+            Route::prefix('common')->as('common.')->group(base_path('routes/common.php'));
+            Route::prefix('api')->as('api.')->group(base_path('routes/api.php'));
+        },
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
-        then: function () {
-            Route::prefix('common')->as('common.')->group(base_path('routes/common.php'));
-        }
     )->withMiddleware(function (Middleware $middleware): void {
         $middleware->use([
             // 处理CORS
