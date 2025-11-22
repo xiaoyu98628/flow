@@ -14,7 +14,7 @@ use Throwable;
 class FlowNodeTaskController extends Controller
 {
     public function __construct(
-        private FlowNodeTaskService $service,
+        private readonly FlowNodeTaskService $service,
     ) {}
 
     /**
