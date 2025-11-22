@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\V1;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Constants\Enums\Flow\StatusEnum;
 use App\Helpers\RequestHelper;

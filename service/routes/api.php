@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\V1\FlowController;
-use App\Http\Controllers\V1\FlowNodeController;
-use App\Http\Controllers\V1\FlowNodeTaskController;
+use App\Http\Controllers\Api\V1\FlowController;
+use App\Http\Controllers\Api\V1\FlowNodeController;
+use App\Http\Controllers\Api\V1\FlowNodeTaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
