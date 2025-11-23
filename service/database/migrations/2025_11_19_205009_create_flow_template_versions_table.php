@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('flow_version_templates', function (Blueprint $table) {
+        Schema::create('flow_template_versions', function (Blueprint $table) {
             $table->ulid('id')->primary()->comment('主键');
             $table->ulid('flow_template_id')->comment('流程模版ID');
             $table->unsignedInteger('version')->comment('版本号[递增]');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('flow_version_templates');
+        Schema::dropIfExists('flow_template_versions');
     }
 };

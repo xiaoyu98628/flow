@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\V1\FlowController;
 use App\Http\Controllers\Api\V1\FlowNodeController;
 use App\Http\Controllers\Api\V1\FlowNodeTaskController;
+use App\Http\Controllers\Api\V1\FlowTemplateController;
+use App\Http\Controllers\Api\V1\FlowTemplateVersionController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -12,7 +14,16 @@ Route::group([
     'as'     => 'v1.',
 ], function () {
 
-    // 流程
+    // 审批模版
+    Route::apiResource('flow-templates', FlowTemplateController::class)->except(['destroy']);
+    Route::controller(FlowTemplateController::class)->prefix('flow-templates')->as('flow-templates.')->group(function () {
+
+        // 审批模版版本
+        Route::apiResource('versions', FlowTemplateVersionController::class)->except(['destroy']);
+    });
+
+
+    // 审批
     Route::apiResource('flows', FlowController::class)->only(['store']);
     Route::controller(FlowController::class)->prefix('flows')->as('flows.')->group(function () {
         Route::put('{id}/submit', 'submit')->name('submit');

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\Helpers\EncryptionHelper;
+use App\Helpers\PageHelper;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -26,6 +29,19 @@ class DecodeRequestMiddleware
             }
         });
 
+        // 分页默认值
+        $request->whenHas('page', function () use ($request) {
+            $request->merge([
+                'page'      => PageHelper::PAGE,
+                'page_size' => PageHelper::PAGE_SIZE,
+            ]);
+        });
+        $request->whenHas('page_size', function () use ($request) {
+            $request->merge([
+                'page'      => PageHelper::PAGE,
+                'page_size' => PageHelper::PAGE_SIZE,
+            ]);
+        });
 
         return $next($request);
     }

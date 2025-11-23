@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $deleted_at
  * @property string $deleted_operator_id
  */
-class FlowVersionTemplate extends BaseModel
+class FlowTemplateVersion extends BaseModel
 {
     use SoftDeletes;
 

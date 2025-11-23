@@ -31,7 +31,7 @@ class FlowRequest extends FormRequest
      */
     public function rules(): array
     {
-        return match (request()->route()->getActionMethod()) {
+        return match ($this->route()->getActionMethod()) {
             'store' => $this->store(),
             default => [],
         };
