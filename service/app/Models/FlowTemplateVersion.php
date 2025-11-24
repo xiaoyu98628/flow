@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -25,8 +26,24 @@ class FlowTemplateVersion extends BaseModel
 {
     use SoftDeletes;
 
-    protected $table = 'flow_version_templates';
+    protected $table = 'flow_template_versions';
 
     /** @var array 获取应该强制转换的属性 */
-    protected $casts = [];
+    protected $casts = [
+        'callback' => 'array',
+        'extend'   => 'array',
+    ];
+
+    /**
+     * @return HasOne
+     */
+    public function nodeTemplateTree(): HasOne
+    {
+        return $this->hasOne(FlowNodeTemplate::class, 'flow_template_id', 'id')->whereNull('parent_id');
+    }
+
+    public function nodeSnapshot()
+    {
+        return $this->hasOne(FlowNodeSnapshot::class, 'flow_template_id', 'id');
+    }
 }

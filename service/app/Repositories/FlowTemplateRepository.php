@@ -9,6 +9,7 @@ use App\Models\FlowTemplate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 
 /**
  * 流程模版仓库
@@ -53,12 +54,11 @@ class FlowTemplateRepository extends BaseRepository
     /**
      * @param  array  $inputs
      * @return FlowTemplate
-     * @throws \Exception
      */
     public function store(array $inputs): FlowTemplate
     {
         if (empty($inputs)) {
-            throw new \Exception('参数错误');
+            throw new InvalidArgumentException('参数错误');
         }
 
         return $this->query()->create([
@@ -74,19 +74,33 @@ class FlowTemplateRepository extends BaseRepository
      * @param  string  $id
      * @param  array  $inputs
      * @return int
-     * @throws \Exception
      */
     public function update(string $id, array $inputs): int
     {
-        if (empty($inputs)) {
-            throw new \Exception('参数错误');
+        if (empty($id) || empty($inputs)) {
+            throw new InvalidArgumentException('参数错误');
         }
 
         return $this->query()->where('id', $id)->update([
-            'name'     => Arr::get($inputs, 'name'),
-            'callback' => empty($inputs['callback']) ? null : $inputs['callback'],
-            'remark'   => Arr::get($inputs, 'remark', ''),
-            'status'   => StatusEnum::DISABLE->value,
+            'name'   => Arr::get($inputs, 'name'),
+            'remark' => Arr::get($inputs, 'remark', ''),
+            'status' => StatusEnum::DISABLE->value,
+        ]);
+    }
+
+    /**
+     * @param  string  $id
+     * @param  array  $inputs
+     * @return int
+     */
+    public function status(string $id, array $inputs): int
+    {
+        if (empty($id) || empty($inputs)) {
+            throw new InvalidArgumentException('参数错误');
+        }
+
+        return $this->query()->where('id', $id)->update([
+            'status' => Arr::get($inputs, 'status'),
         ]);
     }
 }

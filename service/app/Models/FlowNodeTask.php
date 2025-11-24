@@ -21,5 +21,8 @@ class FlowNodeTask extends BaseModel
     protected $table = 'flow_node_tasks';
 
     /** @var array 获取应该强制转换的属性 */
-    protected $casts = [];
+    protected $casts = [
+        'operation_info' => 'array',
+        'extend'         => 'array',
+    ];
 }

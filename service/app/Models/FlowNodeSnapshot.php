@@ -20,5 +20,7 @@ class FlowNodeSnapshot extends BaseModel
     protected $table = 'flow_node_snapshots';
 
     /** @var array 获取应该强制转换的属性 */
-    protected $casts = [];
+    protected $casts = [
+        'snapshot' => 'array',
+    ];
 }

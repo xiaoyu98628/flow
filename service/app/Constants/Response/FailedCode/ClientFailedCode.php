@@ -65,7 +65,7 @@ enum ClientFailedCode: int implements Code
             self::CLIENT_METHOD_NOT_ALLOWED_ERROR            => 'HTTP请求类型错误',
             self::CLIENT_TOO_MANY_REQUESTS                   => '操作过于频繁，请稍后重试',
             self::NETWORK_GLITCH                             => '网络开小差',
-            self::NOT_FOUND                                  => '未定义路由',
+            self::NOT_FOUND                                  => '请求的资源不存在',
             self::RESOURCE_TYPE_ERROR                        => '相应字段类型{type}未定义',
         };
     }

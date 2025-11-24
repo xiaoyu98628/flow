@@ -16,9 +16,21 @@ class FlowTemplateController extends Controller
         private readonly FlowTemplateService $service,
     ) {}
 
+    /**
+     * @return JsonResponse
+     */
     public function index()
     {
-        return $this->service->index(RequestHelper::getInputs([]));
+        return $this->service->index(RequestHelper::getInputs());
+    }
+
+    /**
+     * @param  string  $id
+     * @return JsonResponse
+     */
+    public function show(string $id)
+    {
+        return $this->service->show($id);
     }
 
     /**
@@ -27,16 +39,26 @@ class FlowTemplateController extends Controller
      */
     public function store(FlowTemplateRequest $request)
     {
-        return $this->service->store(RequestHelper::getInputs([]));
+        return $this->service->store(RequestHelper::getInputs());
     }
 
-    public function update(string $id)
+    /**
+     * @param  FlowTemplateRequest  $request
+     * @param  string  $id
+     * @return JsonResponse
+     */
+    public function update(FlowTemplateRequest $request, string $id)
     {
-        return $this->service->update($id, RequestHelper::getInputs([]));
+        return $this->service->update($id, RequestHelper::getInputs());
     }
 
-    public function status(string $id)
+    /**
+     * @param  FlowTemplateRequest  $request
+     * @param  string  $id
+     * @return JsonResponse
+     */
+    public function status(FlowTemplateRequest $request, string $id)
     {
-        return $this->service->status($id, RequestHelper::getInputs([]));
+        return $this->service->status($id, RequestHelper::getInputs());
     }
 }

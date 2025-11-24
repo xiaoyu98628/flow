@@ -15,16 +15,20 @@ Route::group([
 ], function () {
 
     // 审批模版
-    Route::apiResource('flow-templates', FlowTemplateController::class)->except(['destroy']);
     Route::controller(FlowTemplateController::class)->prefix('flow-templates')->as('flow-templates.')->group(function () {
+        Route::put('{id}/status', 'status')->name('status');
 
         // 审批模版版本
+        Route::controller(FlowTemplateVersionController::class)->prefix('versions')->as('versions.')->group(function () {
+            Route::put('{id}/status', 'status')->name('status');
+
+        });
         Route::apiResource('versions', FlowTemplateVersionController::class)->except(['destroy']);
     });
+    Route::apiResource('flow-templates', FlowTemplateController::class)->except(['destroy']);
 
 
     // 审批
-    Route::apiResource('flows', FlowController::class)->only(['store']);
     Route::controller(FlowController::class)->prefix('flows')->as('flows.')->group(function () {
         Route::put('{id}/submit', 'submit')->name('submit');
         Route::put('{id}/cancel', 'cancel')->name('cancel');
@@ -38,5 +42,6 @@ Route::group([
             });
         });
     });
+    Route::apiResource('flows', FlowController::class)->only(['store']);
 
 });

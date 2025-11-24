@@ -6,7 +6,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\RequestHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FlowTemplateVersion\FlowTemplateVersionRequest;
 use App\Services\FlowTemplateVersionService;
+use Illuminate\Http\JsonResponse;
+use Throwable;
 
 class FlowTemplateVersionController extends Controller
 {
@@ -14,28 +17,54 @@ class FlowTemplateVersionController extends Controller
         private readonly FlowTemplateVersionService $service,
     ) {}
 
-    public function index()
+    /**
+     * @param  FlowTemplateVersionRequest  $request
+     * @return JsonResponse
+     */
+    public function index(FlowTemplateVersionRequest $request)
     {
-        return $this->service->index();
+        return $this->service->index(RequestHelper::getInputs());
     }
 
-    public function show(string $id)
+    /**
+     * @param  FlowTemplateVersionRequest  $request
+     * @param  string  $id
+     * @return JsonResponse
+     */
+    public function show(FlowTemplateVersionRequest $request, string $id)
     {
-        return $this->service->show($id);
+        return $this->service->show($id, RequestHelper::getInputs());
     }
 
-    public function store()
+    /**
+     * @param  FlowTemplateVersionRequest  $request
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function store(FlowTemplateVersionRequest $request)
     {
-        return $this->service->store(RequestHelper::getInputs([]));
+        return $this->service->store(RequestHelper::getInputs());
     }
 
-    public function update(string $id)
+    /**
+     * @param  FlowTemplateVersionRequest  $request
+     * @param  string  $id
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function update(FlowTemplateVersionRequest $request, string $id)
     {
-        return $this->service->update($id, RequestHelper::getInputs([]));
+        return $this->service->update($id, RequestHelper::getInputs());
     }
 
-    public function status(string $id)
+    /**
+     * @param  FlowTemplateVersionRequest  $request
+     * @param  string  $id
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function status(FlowTemplateVersionRequest $request, string $id)
     {
-        return $this->service->status($id, RequestHelper::getInputs([]));
+        return $this->service->status($id, RequestHelper::getInputs());
     }
 }

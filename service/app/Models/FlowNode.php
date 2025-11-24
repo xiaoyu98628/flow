@@ -25,5 +25,9 @@ class FlowNode extends BaseModel
     protected $table = 'flow_nodes';
 
     /** @var array 获取应该强制转换的属性 */
-    protected $casts = [];
+    protected $casts = [
+        'rules'    => 'array',
+        'callback' => 'array',
+        'extend'   => 'array',
+    ];
 }

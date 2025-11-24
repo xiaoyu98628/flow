@@ -28,5 +28,9 @@ class Flow extends BaseModel
     protected $table = 'flows';
 
     /** @var array 获取应该强制转换的属性 */
-    protected $casts = [];
+    protected $casts = [
+        'business_snapshot' => 'array',
+        'callback'          => 'array',
+        'extend'            => 'array',
+    ];
 }

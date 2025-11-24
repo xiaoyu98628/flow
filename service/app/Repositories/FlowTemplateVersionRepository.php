@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Constants\Enums\FlowVersionTemplate\StatusEnum;
-use App\Models\FlowTemplate;
+use App\Constants\Enums\FlowTemplateVersion\StatusEnum;
 use App\Models\FlowTemplateVersion;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 
 /**
  * 流程版本模版仓库
@@ -22,21 +23,71 @@ class FlowTemplateVersionRepository extends BaseRepository
 
     /**
      * @param  array  $inputs
-     * @return FlowTemplate
-     * @throws \Exception
+     * @return LengthAwarePaginator
      */
-    public function store(array $inputs): FlowTemplate
+    public function page(array $inputs): LengthAwarePaginator
+    {
+        $query = $this->query();
+
+        $query->where('flow_template_id', Arr::get($inputs, 'flow_template_id'));
+
+        return $query->paginate($inputs['page_size']);
+    }
+
+    /**
+     * @param  array  $inputs
+     * @return FlowTemplateVersion
+     */
+    public function store(array $inputs): FlowTemplateVersion
     {
         if (empty($inputs)) {
-            throw new \Exception('参数错误');
+            throw new InvalidArgumentException('参数错误');
         }
 
         return $this->query()->create([
             'flow_template_id' => Arr::get($inputs, 'flow_template_id'),
             'name'             => Arr::get($inputs, 'name'),
-            'callback'         => Arr::get($inputs, 'callback'),
+            'callback'         => empty($inputs['callback']) ? null : $inputs['callback'],
             'status'           => StatusEnum::DRAFT->value,
-            'extend'           => Arr::get($inputs, 'extend', null),
+            'extend'           => Arr::get($inputs, 'extend'),
+        ]);
+    }
+
+    /**
+     * @param  string  $id
+     * @param  array  $inputs
+     * @return int
+     */
+    public function update(string $id, array $inputs): int
+    {
+        if (empty($id) || empty($inputs)) {
+            throw new InvalidArgumentException('参数错误');
+        }
+
+        return $this->query()
+            ->where('id', $id)
+            ->where('flow_template_id', Arr::get($inputs, 'flow_template_id'))
+            ->update([
+                'name'     => Arr::get($inputs, 'name'),
+                'callback' => empty($inputs['callback']) ? null : $inputs['callback'],
+                'status'   => StatusEnum::DRAFT->value,
+                'extend'   => Arr::get($inputs, 'extend'),
+            ]);
+    }
+
+    /**
+     * @param  string  $id
+     * @param  array  $inputs
+     * @return int
+     */
+    public function status(string $id, array $inputs): int
+    {
+        if (empty($id) || empty($inputs)) {
+            throw new InvalidArgumentException('参数错误');
+        }
+
+        return $this->query()->where('id', $id)->update([
+            'status' => Arr::get($inputs, 'status'),
         ]);
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('flow_template_versions', function (Blueprint $table) {
             $table->ulid('id')->primary()->comment('主键');
             $table->ulid('flow_template_id')->comment('流程模版ID');
-            $table->unsignedInteger('version')->comment('版本号[递增]');
+            $table->unsignedInteger('version')->nullable()->default(0)->comment('版本号[递增]');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft')->comment('状态[draft:草稿, published:已发布, archived:已归档]');
             $table->string('name', 100)->nullable()->comment('名称');
             $table->json('callback')->nullable()->comment('回调');

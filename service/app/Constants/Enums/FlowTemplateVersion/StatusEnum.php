@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Constants\Enums\FlowVersionTemplate;
+namespace App\Constants\Enums\FlowTemplateVersion;
 
 use App\Constants\Enums\BaseEnumTrait;
 use App\Constants\Enums\EnumInterface;

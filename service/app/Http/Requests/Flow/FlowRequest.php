@@ -49,7 +49,7 @@ class FlowRequest extends FormRequest
             'is_draft.boolean'     => '参数[business_id]为boolean类型',
             'code.required'        => '参数[code]不能为空',
             'code.string'          => '参数[code]为string类型',
-            'code.in'              => '参数[code]错误',
+            'code.in'              => '参数[code]无效',
             'business_id.required' => '参数[business_id]不能为空',
             'business_id.string'   => '参数[business_id]为string类型',
         ];

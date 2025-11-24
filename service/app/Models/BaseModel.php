@@ -24,17 +24,27 @@ class BaseModel extends Model
     /** @var bool 表明模型的 ID 是否自增 */
     public $incrementing = false;
 
-    /** @var bool 是否使用时间戳 */
-    public $timestamps = false;
+    /** @var bool 是否主动维护时间戳 */
+    public $timestamps = true;
+
+    /**
+     * 时间戳的存储格式 - 对于 datetime 字段不需要特别设置
+     * 但如果您需要自定义格式，可以设置
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
 
     /** @var array 获取应该强制转换的属性 */
-    protected $casts = [];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     /** @var array 不可被批量赋值的属性（黑名单） */
     protected $guarded = [];
 
     protected function serializeDate(DateTimeInterface $date): string
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format($this->getDateFormat());
     }
 }
