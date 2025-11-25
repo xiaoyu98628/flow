@@ -8,7 +8,7 @@ use App\Helpers\ResponseHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-class FlowService
+readonly class FlowService
 {
     /**
      * 创建审批流程
