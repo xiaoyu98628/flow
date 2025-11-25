@@ -9,7 +9,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 abstract class BaseResource extends JsonResource
 {
-
     /**
      * Transform the resource into an array.
      *
@@ -17,6 +16,16 @@ abstract class BaseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $defaultFields = $this->getDefaultFields($request);
+        $withFields    = $this->getWithFields($request);
+        $customFields  = $this->getCustomFields($request);
+
+        return [...$defaultFields, ...$withFields, ...$customFields];
     }
+
+    abstract public function getDefaultFields(Request $request): array;
+
+    abstract public function getWithFields(Request $request): array;
+
+    abstract public function getCustomFields(Request $request): array;
 }
