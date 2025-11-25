@@ -63,14 +63,14 @@ return [
         // 单文件
         'single' => [
             'driver'               => 'single',
-            'path'                 => storage_path('logs/laravel.log'),
+            'path'                 => storage_path('logs/'.date('Y-m-d').'/laravel.log'),
             'level'                => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
 
         'daily' => [
             'driver'               => 'daily',
-            'path'                 => storage_path('logs/laravel.log'),
+            'path'                 => storage_path('logs/'.date('Y-m-d').'/laravel.log'),
             'level'                => env('LOG_LEVEL', 'debug'),
             'days'                 => env('LOG_DAILY_DAYS', 14),
             'replace_placeholders' => true,
@@ -129,12 +129,12 @@ return [
         ],
 
         'emergency' => [
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/'.date('Y-m-d').'/laravel.log'),
         ],
 
         'db' => [
             'driver'               => 'single',
-            'path'                 => storage_path('logs/db.log'),
+            'path'                 => storage_path('logs/'.date('Y-m-d').'/db.log'),
             'level'                => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
