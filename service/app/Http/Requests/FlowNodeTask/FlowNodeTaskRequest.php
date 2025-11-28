@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\FlowNodeTask;
 
+use App\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class FlowNodeTaskRequest extends FormRequest
+class FlowNodeTaskRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,9 +30,7 @@ class FlowNodeTaskRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public function attributes(): array

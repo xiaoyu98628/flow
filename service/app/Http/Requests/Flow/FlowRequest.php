@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\Http\Requests\Flow;
 
 use App\Constants\Enums\Flow\TypeEnum;
+use App\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class FlowRequest extends FormRequest
+class FlowRequest extends BaseRequest
 {
     /**
      * 是否有权发出此请求
      */
     public function authorize(): bool
     {
-        return in_array(request()->route()->getActionMethod(), ['store', 'submit', 'cancel']);
+        return true;
     }
 
     /**

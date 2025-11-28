@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Requests\FlowTemplateVersion;
 
 use App\Constants\Enums\FlowTemplateVersion\StatusEnum;
+use App\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class FlowTemplateVersionRequest extends FormRequest
+class FlowTemplateVersionRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

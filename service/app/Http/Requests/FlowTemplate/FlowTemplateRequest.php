@@ -6,10 +6,9 @@ namespace App\Http\Requests\FlowTemplate;
 
 use App\Constants\Enums\FlowTemplate\StatusEnum;
 use App\Constants\Enums\FlowTemplate\TypeEnum;
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class FlowTemplateRequest extends FormRequest
+class FlowTemplateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,19 +24,30 @@ class FlowTemplateRequest extends FormRequest
      */
     public function prepareForValidation(): void {}
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array|string>
-     */
-    public function rules(): array
+    private function storeRules(): array
     {
-        return match ($this->route()->getActionMethod()) {
-            'store'  => $this->store(),
-            'update' => $this->update(),
-            'status' => $this->status(),
-            default  => [],
-        };
+
+        return [
+            'type'   => ['required', 'string', 'in:'.implode(',', TypeEnum::values())],
+            'code'   => ['required', 'string', 'max:50'],
+            'name'   => ['required', 'string', 'max:50'],
+            'remark' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+
+    private function updateRules(): array
+    {
+        return [
+            'name'   => ['required', 'string', 'max:50'],
+            'remark' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+
+    private function statusRules(): array
+    {
+        return [
+            'status' => ['required', 'string', 'in:'.implode(',', StatusEnum::values())],
+        ];
     }
 
     public function attributes(): array
@@ -61,31 +71,6 @@ class FlowTemplateRequest extends FormRequest
             'status.required' => '参数[status]不能为空',
             'status.string'   => '参数[status]为string类型',
             'status.in'       => '参数[status]无效',
-        ];
-    }
-
-    private function store(): array
-    {
-        return [
-            'type'   => ['required', 'string', 'in:'.implode(',', TypeEnum::values())],
-            'code'   => ['required', 'string', 'max:50'],
-            'name'   => ['required', 'string', 'max:50'],
-            'remark' => ['nullable', 'string', 'max:255'],
-        ];
-    }
-
-    private function update(): array
-    {
-        return [
-            'name'   => ['required', 'string', 'max:50'],
-            'remark' => ['nullable', 'string', 'max:255'],
-        ];
-    }
-
-    private function status(): array
-    {
-        return [
-            'status' => ['required', 'string', 'in:'.implode(',', StatusEnum::values())],
         ];
     }
 }
