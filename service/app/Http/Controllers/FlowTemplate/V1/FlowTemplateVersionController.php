@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\FlowTemplate;
+namespace App\Http\Controllers\FlowTemplate\V1;
 
 use App\Helpers\RequestHelper;
 use App\Http\Controllers\Controller;

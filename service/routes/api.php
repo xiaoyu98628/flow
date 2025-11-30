@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\FlowController;
 use App\Http\Controllers\Api\V1\FlowNodeTaskController;
-use App\Http\Controllers\FlowTemplate\FlowTemplateController;
-use App\Http\Controllers\FlowTemplate\FlowTemplateVersionController;
+use App\Http\Controllers\FlowTemplate\V1\FlowTemplateController;
+use App\Http\Controllers\FlowTemplate\V1\FlowTemplateVersionController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
