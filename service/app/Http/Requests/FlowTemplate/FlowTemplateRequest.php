@@ -24,7 +24,7 @@ class FlowTemplateRequest extends BaseRequest
      */
     public function prepareForValidation(): void {}
 
-    private function storeRules(): array
+    public function storeRules(): array
     {
 
         return [
@@ -35,7 +35,7 @@ class FlowTemplateRequest extends BaseRequest
         ];
     }
 
-    private function updateRules(): array
+    public function updateRules(): array
     {
         return [
             'name'   => ['required', 'string', 'max:50'],
@@ -43,7 +43,7 @@ class FlowTemplateRequest extends BaseRequest
         ];
     }
 
-    private function statusRules(): array
+    public function statusRules(): array
     {
         return [
             'status' => ['required', 'string', 'in:'.implode(',', StatusEnum::values())],

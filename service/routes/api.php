@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\FlowController;
-use App\Http\Controllers\Api\V1\FlowNodeController;
 use App\Http\Controllers\Api\V1\FlowNodeTaskController;
-use App\Http\Controllers\Api\V1\FlowTemplateController;
-use App\Http\Controllers\Api\V1\FlowTemplateVersionController;
+use App\Http\Controllers\FlowTemplate\FlowTemplateController;
+use App\Http\Controllers\FlowTemplate\FlowTemplateVersionController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -15,33 +14,42 @@ Route::group([
 ], function () {
 
     // 审批模版
-    Route::controller(FlowTemplateController::class)->prefix('flow-templates')->as('flow-templates.')->group(function () {
-        Route::put('{id}/status', 'status')->name('status');
+    Route::group([
+        'prefix' => 'flow-templates',
+        'as'     => 'flow-templates.',
+    ], function () {
+        Route::put('{flow_template}/status', [FlowTemplateController::class, 'status'])->name('status');
 
-        // 审批模版版本
-        Route::controller(FlowTemplateVersionController::class)->prefix('versions')->as('versions.')->group(function () {
-            Route::put('{id}/status', 'status')->name('status');
-
+        Route::group([
+            'prefix' => 'versions',
+            'as'     => 'versions.',
+        ], function () {
+            Route::put('{version}/status', [FlowTemplateVersionController::class, 'status'])->name('status');
         });
         Route::apiResource('versions', FlowTemplateVersionController::class)->except(['destroy']);
     });
     Route::apiResource('flow-templates', FlowTemplateController::class)->except(['destroy']);
 
-
     // 审批
-    Route::controller(FlowController::class)->prefix('flows')->as('flows.')->group(function () {
-        Route::put('{id}/submit', 'submit')->name('submit');
-        Route::put('{id}/cancel', 'cancel')->name('cancel');
+    Route::group([
+        'prefix' => 'flows',
+        'as'     => 'flows.',
+    ], function () {
+        Route::put('{flow}/submit', [FlowController::class, 'submit'])->name('submit');
+        Route::put('{flow}/cancel', [FlowController::class, 'cancel'])->name('cancel');
 
-        // 节点
-        Route::controller(FlowNodeController::class)->prefix('nodes')->as('nodes.')->group(function () {
+        Route::group([
+            'prefix' => 'nodes',
+            'as'     => 'nodes.',
+        ], function () {
 
-            // 任务
-            Route::controller(FlowNodeTaskController::class)->prefix('tasks')->as('tasks.')->group(function () {
-                Route::put('{id}/approve', 'approve')->name('approve');
+            Route::group([
+                'prefix' => 'tasks',
+                'as'     => 'tasks.',
+            ], function () {
+                Route::put('{task}/approve', [FlowNodeTaskController::class, 'approve'])->name('approve');
             });
         });
     });
     Route::apiResource('flows', FlowController::class)->only(['store']);
-
 });
