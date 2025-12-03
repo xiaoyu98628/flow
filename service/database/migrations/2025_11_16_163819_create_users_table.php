@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('email_encryption')->nullable()->comment('邮箱[加密]');
             $table->string('password', 255)->comment('密码');
             $table->string('status', 255)->default('activation')->comment('状态[activation:激活,locking:锁定,cancelled:注销,leave:离职]');
-            MigrationHelper::time($table);
+            MigrationHelper::timestampsWithSoftDeletes($table);
             $table->comment('用户表');
         });
     }

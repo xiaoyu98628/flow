@@ -16,7 +16,7 @@ return new class extends Migration
             $table->ulid('id')->primary()->comment('主键');
             $table->ulid('flow_version_template_id')->comment('流程版本模版ID')->index('idx_flow_version_template_id');
             $table->json('snapshot')->comment('节点快照');
-            MigrationHelper::operatorAndTime($table);
+            MigrationHelper::timestampsWithOperators($table);
             $table->comment('流程节点快照表');
         });
     }

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->json('callback')->nullable()->comment('回调');
             $table->ulid('flow_id')->comment('审批ID')->index('idx_flow_id');
             $table->json('extend')->nullable()->comment('额外信息');
-            MigrationHelper::time($table);
+            MigrationHelper::timestampsWithSoftDeletes($table);
             $table->comment('审批节点实例表');
         });
     }

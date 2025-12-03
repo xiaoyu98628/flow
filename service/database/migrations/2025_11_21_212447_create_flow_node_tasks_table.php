@@ -30,7 +30,7 @@ return new class extends Migration
             ])->comment('状态[pending:待处理,approved:已同意,rejected:已拒绝,transferred:已转交,forwarded:已转交,add_signed:已加签,skipped:已跳过,auto:自动处理,canceled:已取消]');
             $table->ulid('flow_node_id')->comment('审批节点ID')->index('idx_flow_node_id');
             $table->json('extend')->nullable()->comment('额外信息');
-            MigrationHelper::time($table);
+            MigrationHelper::timestampsWithSoftDeletes($table);
             $table->comment('流程节点任务实例表');
         });
     }

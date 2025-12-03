@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('name', 100)->nullable()->comment('名称');
             $table->json('callback')->nullable()->comment('回调');
             $table->json('extend')->nullable()->comment('额外信息');
-            MigrationHelper::operatorAndTime($table);
+            MigrationHelper::timestampsWithOperators($table);
             $table->unique(['flow_template_id', 'version'], 'idx_template_id_version');
             $table->comment('流程模版版本表');
         });

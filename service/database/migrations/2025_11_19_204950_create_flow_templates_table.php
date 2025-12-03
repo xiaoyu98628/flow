@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('remark')->nullable()->comment('备注');
             $table->unsignedInteger('current_version')->default(0)->comment('已发布版本号');
             $table->enum('status', ['enable', 'disable'])->default('enable')->comment('状态[enable:启用,disable:禁用]');
-            MigrationHelper::operatorAndTime($table);
+            MigrationHelper::timestampsWithOperators($table);
             $table->index(['type', 'code'], 'idx_type_code');
             $table->comment('流程模版表');
         });

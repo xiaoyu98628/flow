@@ -34,7 +34,7 @@ return new class extends Migration
             $table->ulid('applicant_id')->comment('申请人ID')->index('idx_applicant_id');
             $table->json('extend')->nullable()->comment('额外信息');
             $table->ulid('flow_version_template_id')->comment('流程版本模版ID');
-            MigrationHelper::time($table);
+            MigrationHelper::timestampsWithSoftDeletes($table);
             $table->comment('审批实例表');
         });
     }

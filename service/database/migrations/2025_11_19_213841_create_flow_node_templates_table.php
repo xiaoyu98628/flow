@@ -23,7 +23,7 @@ return new class extends Migration
             $table->json('rules')->nullable()->comment('审批规则');
             $table->json('callback')->nullable()->comment('回调');
             $table->ulid('flow_version_template_id')->comment('流程版本模版ID')->index('idx_flow_version_template_id');
-            MigrationHelper::operatorAndTime($table);
+            MigrationHelper::timestampsWithOperators($table);
             $table->comment('审批节点模版表');
         });
     }

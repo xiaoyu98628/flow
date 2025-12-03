@@ -27,7 +27,7 @@ return new class extends Migration
             $table->dateTime('last_login_at')->nullable()->comment('最后一次登陆时间');
             $table->string('last_login_ip', 255)->nullable()->comment('最后一次登录IP');
             $table->string('last_login_city', 255)->nullable()->comment('最后一次登录地址');
-            MigrationHelper::time($table);
+            MigrationHelper::timestampsWithSoftDeletes($table);
             $table->comment('用户扩展表');
         });
     }
