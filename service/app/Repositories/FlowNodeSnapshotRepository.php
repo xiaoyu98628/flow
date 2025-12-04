@@ -38,19 +38,21 @@ class FlowNodeSnapshotRepository extends BaseRepository
     /**
      * @param  string  $id
      * @param  array  $inputs
-     * @return int
+     * @return bool
      */
-    public function update(string $id, array $inputs): int
+    public function update(string $id, array $inputs): bool
     {
         if (empty($id) || empty($inputs)) {
             throw new InvalidArgumentException('参数错误');
         }
 
-        return $this->query()
+        $model = $this->query()
             ->where('id', $id)
             ->where('flow_version_template_id', $inputs['flow_version_template_id'])
-            ->update([
-                'snapshot' => Arr::get($inputs, 'snapshot'),
-            ]);
+            ->firstOrFail();
+
+        return $model->update([
+            'snapshot' => Arr::get($inputs, 'snapshot'),
+        ]);
     }
 }

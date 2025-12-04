@@ -45,15 +45,17 @@ class FlowNodeTemplateRepository extends BaseRepository
     /**
      * @param  string  $id
      * @param  array  $inputs
-     * @return int
+     * @return bool
      */
-    public function update(string $id, array $inputs): int
+    public function update(string $id, array $inputs): bool
     {
         if (empty($id) || empty($inputs)) {
             throw new InvalidArgumentException('参数错误');
         }
 
-        return $this->query()->where('id', $id)->update([
+        $model = $this->query()->findOrFail($id);
+
+        return $model->update([
             'parent_id'                => Arr::get($inputs, 'parent_id'),
             'depth'                    => Arr::get($inputs, 'depth'),
             'priority'                 => Arr::get($inputs, 'priority'),

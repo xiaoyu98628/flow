@@ -73,15 +73,17 @@ class FlowTemplateRepository extends BaseRepository
     /**
      * @param  string  $id
      * @param  array  $inputs
-     * @return int
+     * @return bool
      */
-    public function update(string $id, array $inputs): int
+    public function update(string $id, array $inputs): bool
     {
         if (empty($id) || empty($inputs)) {
             throw new InvalidArgumentException('参数错误');
         }
 
-        return $this->query()->where('id', $id)->update([
+        $model = $this->query()->findOrFail($id);
+
+        return $model->update([
             'name'   => Arr::get($inputs, 'name'),
             'remark' => Arr::get($inputs, 'remark', ''),
             'status' => StatusEnum::DISABLE->value,
@@ -91,15 +93,17 @@ class FlowTemplateRepository extends BaseRepository
     /**
      * @param  string  $id
      * @param  array  $inputs
-     * @return int
+     * @return bool
      */
-    public function status(string $id, array $inputs): int
+    public function status(string $id, array $inputs): bool
     {
         if (empty($id) || empty($inputs)) {
             throw new InvalidArgumentException('参数错误');
         }
 
-        return $this->query()->where('id', $id)->update([
+        $model = $this->query()->findOrFail($id);
+
+        return $model->update([
             'status' => Arr::get($inputs, 'status'),
         ]);
     }

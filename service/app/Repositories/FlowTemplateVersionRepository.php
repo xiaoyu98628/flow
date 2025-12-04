@@ -56,37 +56,41 @@ class FlowTemplateVersionRepository extends BaseRepository
     /**
      * @param  string  $id
      * @param  array  $inputs
-     * @return int
+     * @return bool
      */
-    public function update(string $id, array $inputs): int
+    public function update(string $id, array $inputs): bool
     {
         if (empty($id) || empty($inputs)) {
             throw new InvalidArgumentException('参数错误');
         }
 
-        return $this->query()
+        $model = $this->query()
             ->where('id', $id)
             ->where('flow_template_id', Arr::get($inputs, 'flow_template_id'))
-            ->update([
-                'name'     => Arr::get($inputs, 'name'),
-                'callback' => empty($inputs['callback']) ? null : $inputs['callback'],
-                'status'   => StatusEnum::DRAFT->value,
-                'extend'   => Arr::get($inputs, 'extend'),
-            ]);
+            ->firstOrFail();
+
+        return $model->update([
+            'name'     => Arr::get($inputs, 'name'),
+            'callback' => empty($inputs['callback']) ? null : $inputs['callback'],
+            'status'   => StatusEnum::DRAFT->value,
+            'extend'   => Arr::get($inputs, 'extend'),
+        ]);
     }
 
     /**
      * @param  string  $id
      * @param  array  $inputs
-     * @return int
+     * @return bool
      */
-    public function status(string $id, array $inputs): int
+    public function status(string $id, array $inputs): bool
     {
         if (empty($id) || empty($inputs)) {
             throw new InvalidArgumentException('参数错误');
         }
 
-        return $this->query()->where('id', $id)->update([
+        $model = $this->query()->firstOrFail($id);
+
+        return $model->update([
             'status' => Arr::get($inputs, 'status'),
         ]);
     }
