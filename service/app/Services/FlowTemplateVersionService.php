@@ -9,6 +9,8 @@ use App\Constants\Response\FailedCode\ClientFailedCode;
 use App\Helpers\ResponseHelper;
 use App\Http\Resources\BaseCollection;
 use App\Http\Resources\FlowTemplateVersionResource;
+use App\Models\FlowTemplate;
+use App\Models\FlowTemplateVersion;
 use App\Repositories\FlowTemplateVersionRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
@@ -23,36 +25,37 @@ readonly class FlowTemplateVersionService
     ) {}
 
     /**
+     * @param  FlowTemplate  $flowTemplate
      * @param  array  $inputs
      * @return JsonResponse
      */
-    public function index(array $inputs): JsonResponse
+    public function index(FlowTemplate $flowTemplate, array $inputs): JsonResponse
     {
-        return ResponseHelper::success(new BaseCollection($this->repository->page($inputs), FlowTemplateVersionResource::class));
+        return ResponseHelper::success(new BaseCollection($this->repository->page($flowTemplate, $inputs), FlowTemplateVersionResource::class));
     }
 
     /**
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
+     * @param  FlowTemplateVersion  $flowTemplateVersion
      * @param  array  $inputs
      * @return JsonResponse
      */
-    public function show(string $id, array $inputs): JsonResponse
+    public function show(FlowTemplate $flowTemplate, FlowTemplateVersion $flowTemplateVersion, array $inputs): JsonResponse
     {
-        $model = $this->repository->query()->where('flow_template_id', Arr::get($inputs, 'flow_template_id'))->findOrFail($id);
-
-        return ResponseHelper::success(new FlowTemplateVersionResource($model));
+        return ResponseHelper::success(new FlowTemplateVersionResource($flowTemplateVersion));
     }
 
     /**
+     * @param  FlowTemplate  $flowTemplate
      * @param  array  $inputs
      * @return JsonResponse
      * @throws Throwable
      */
-    public function store(array $inputs): JsonResponse
+    public function store(FlowTemplate $flowTemplate, array $inputs): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $flowVersionTemplate = $this->repository->store($inputs);
+            $flowVersionTemplate = $this->repository->store($flowTemplate, $inputs);
 
             DB::commit();
 
@@ -65,25 +68,26 @@ readonly class FlowTemplateVersionService
     }
 
     /**
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
+     * @param  FlowTemplateVersion  $flowTemplateVersion
      * @param  array  $inputs
      * @return JsonResponse
      * @throws Throwable
      */
-    public function update(string $id, array $inputs): JsonResponse
+    public function update(FlowTemplate $flowTemplate, FlowTemplateVersion $flowTemplateVersion, array $inputs): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $model = $this->repository->query()->where('flow_template_id', Arr::get($inputs, 'flow_template_id'))->findOrFail($id);
-            if ($model->status != StatusEnum::DRAFT->value) {
+            if ($flowTemplateVersion->status != StatusEnum::DRAFT->value) {
                 throw new AccessDeniedHttpException('只有草稿流程模板版本可以更新');
             }
 
-            $flowVersionTemplate = $this->repository->update($id, $inputs);
+            $inputs['callback']  = empty($inputs['callback']) ? null : $inputs['callback'];
+            $flowVersionTemplate = $flowTemplateVersion->update(Arr::only($inputs, ['name', 'callback']));
 
             DB::commit();
 
-            return ResponseHelper::success();
+            return ResponseHelper::success($flowVersionTemplate);
         } catch (AccessDeniedHttpException $e) {
             DB::rollBack();
 
@@ -96,31 +100,29 @@ readonly class FlowTemplateVersionService
     }
 
     /**
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
+     * @param  FlowTemplateVersion  $flowTemplateVersion
      * @param  array  $inputs
      * @return JsonResponse
-     * @throws Throwable
      */
-    public function status(string $id, array $inputs): JsonResponse
+    public function status(FlowTemplate $flowTemplate, FlowTemplateVersion $flowTemplateVersion, array $inputs): JsonResponse
     {
-        DB::beginTransaction();
         try {
-            $model = $this->repository->query()->where('flow_template_id', Arr::get($inputs, 'flow_template_id'))->findOrFail($id);
-            if ($model->status != StatusEnum::DRAFT->value) {
+            if ($flowTemplateVersion->status != StatusEnum::DRAFT->value) {
                 throw new AccessDeniedHttpException('只有草稿流程模板版本可以更新');
             }
 
-            $this->repository->status($id, $inputs);
+            if ($flowTemplateVersion->status == $inputs['status']) {
+                throw new AccessDeniedHttpException('流程模板版本已处于该状态');
+            }
 
-            DB::commit();
+            $flowTemplateVersion->update(Arr::only($inputs, ['status']));
 
             return ResponseHelper::success();
         } catch (AccessDeniedHttpException $e) {
-            DB::rollBack();
 
             return ResponseHelper::fail(code: ClientFailedCode::CLIENT_FORBIDDEN_ERROR, message: $e->getMessage());
         } catch (Throwable $e) {
-            DB::rollBack();
 
             return ResponseHelper::fail(message: $e->getMessage());
         }

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Constants\Response\FailedCode\ClientFailedCode;
 use App\Helpers\ResponseHelper;
 use App\Http\Resources\BaseCollection;
 use App\Http\Resources\FlowTemplateResource;
+use App\Models\FlowTemplate;
 use App\Repositories\FlowTemplateRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 readonly class FlowTemplateService
@@ -27,12 +31,12 @@ readonly class FlowTemplateService
     }
 
     /**
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
      * @return JsonResponse
      */
-    public function show(string $id): JsonResponse
+    public function show(FlowTemplate $flowTemplate): JsonResponse
     {
-        return ResponseHelper::success(new FlowTemplateResource($this->repository->query()->findOrFail($id)));
+        return ResponseHelper::success(new FlowTemplateResource($flowTemplate));
     }
 
     /**
@@ -49,32 +53,36 @@ readonly class FlowTemplateService
     }
 
     /**
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
      * @param  array  $inputs
      * @return JsonResponse
      */
-    public function update(string $id, array $inputs): JsonResponse
+    public function update(FlowTemplate $flowTemplate, array $inputs): JsonResponse
     {
         try {
-            $this->repository->query()->findOrFail($id);
-
-            return ResponseHelper::success($this->repository->update($id, $inputs));
+            return ResponseHelper::success($flowTemplate->update(Arr::only($inputs, ['name', 'remark'])));
         } catch (Throwable $e) {
             return ResponseHelper::fail(message: $e->getMessage());
         }
     }
 
     /**
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
      * @param  array  $inputs
      * @return JsonResponse
      */
-    public function status(string $id, array $inputs): JsonResponse
+    public function status(FlowTemplate $flowTemplate, array $inputs): JsonResponse
     {
         try {
-            $this->repository->query()->findOrFail($id);
 
-            return ResponseHelper::success($this->repository->status($id, $inputs));
+            if ($flowTemplate->status == $inputs['status']) {
+                throw new AccessDeniedHttpException('流程模板已处于该状态');
+            }
+
+            return ResponseHelper::success($flowTemplate->update(Arr::only($inputs, ['status'])));
+        } catch (AccessDeniedHttpException $e) {
+
+            return ResponseHelper::fail(code: ClientFailedCode::CLIENT_FORBIDDEN_ERROR, message: $e->getMessage());
         } catch (Throwable $e) {
             return ResponseHelper::fail(message: $e->getMessage());
         }

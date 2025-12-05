@@ -32,7 +32,6 @@ class FlowTemplateVersionRequest extends BaseRequest
     public function rules(): array
     {
         return match ($this->route()->getActionMethod()) {
-            'index', 'show' => $this->index(),
             'store', 'update' => $this->store(),
             'status' => $this->status(),
             default  => [],
@@ -47,8 +46,6 @@ class FlowTemplateVersionRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'flow_template_id.required'   => '参数[flow_template_id]不能为空',
-            'flow_template_id.string'     => '参数[flow_template_id]为string类型',
             'name.required'               => '参数[name]不能为空',
             'name.string'                 => '参数[name]为string类型',
             'callback.array'              => '参数[callback]为array类型',
@@ -60,17 +57,9 @@ class FlowTemplateVersionRequest extends BaseRequest
         ];
     }
 
-    private function index(): array
-    {
-        return [
-            'flow_template_id' => ['required', 'string'],
-        ];
-    }
-
     private function store(): array
     {
         return [
-            'flow_template_id'   => ['required', 'string'],
             'name'               => ['required', 'string', 'max:50'],
             'callback'           => ['array'],
             'node_template_tree' => ['required', 'array'],
@@ -80,8 +69,7 @@ class FlowTemplateVersionRequest extends BaseRequest
     private function status(): array
     {
         return [
-            'flow_template_id' => ['required', 'string'],
-            'status'           => ['required', 'string', 'in:'.implode(',', StatusEnum::values())],
+            'status' => ['required', 'string', 'in:'.implode(',', StatusEnum::values())],
         ];
     }
 }

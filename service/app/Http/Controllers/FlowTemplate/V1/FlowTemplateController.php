@@ -7,6 +7,7 @@ namespace App\Http\Controllers\FlowTemplate\V1;
 use App\Helpers\RequestHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FlowTemplate\FlowTemplateRequest;
+use App\Models\FlowTemplate;
 use App\Services\FlowTemplateService;
 use Illuminate\Http\JsonResponse;
 
@@ -28,9 +29,9 @@ class FlowTemplateController extends Controller
      * @param  string  $id
      * @return JsonResponse
      */
-    public function show(string $id)
+    public function show(FlowTemplate $flowTemplate)
     {
-        return $this->service->show($id);
+        return $this->service->show($flowTemplate);
     }
 
     /**
@@ -44,21 +45,21 @@ class FlowTemplateController extends Controller
 
     /**
      * @param  FlowTemplateRequest  $request
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
      * @return JsonResponse
      */
-    public function update(FlowTemplateRequest $request, string $id)
+    public function update(FlowTemplateRequest $request, FlowTemplate $flowTemplate)
     {
-        return $this->service->update($id, RequestHelper::getInputs());
+        return $this->service->update($flowTemplate, RequestHelper::getInputs());
     }
 
     /**
      * @param  FlowTemplateRequest  $request
-     * @param  string  $id
+     * @param  FlowTemplate  $flowTemplate
      * @return JsonResponse
      */
-    public function status(FlowTemplateRequest $request, string $id)
+    public function status(FlowTemplateRequest $request, FlowTemplate $flowTemplate)
     {
-        return $this->service->status($id, RequestHelper::getInputs());
+        return $this->service->status($flowTemplate, RequestHelper::getInputs());
     }
 }

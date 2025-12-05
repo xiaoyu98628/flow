@@ -15,39 +15,40 @@ Route::group([
 
     // 审批模版
     Route::group([
-        'prefix' => 'flow-templates',
+        'prefix' => 'flow-templates/{flow_template}',
         'as'     => 'flow-templates.',
     ], function () {
-        Route::put('{flow_template}/status', [FlowTemplateController::class, 'status'])->name('status');
+        Route::put('status', [FlowTemplateController::class, 'status'])->name('status');
 
         Route::group([
-            'prefix' => 'versions',
+            'prefix' => 'flow_template_versions/{flow_template_version}',
             'as'     => 'versions.',
         ], function () {
-            Route::put('{version}/status', [FlowTemplateVersionController::class, 'status'])->name('status');
+            Route::put('status', [FlowTemplateVersionController::class, 'status'])->name('status');
         });
-        Route::apiResource('versions', FlowTemplateVersionController::class)->except(['destroy']);
+        Route::apiResource('flow_template_versions', FlowTemplateVersionController::class)->except(['destroy']);
     });
     Route::apiResource('flow-templates', FlowTemplateController::class)->except(['destroy']);
 
+
     // 审批
     Route::group([
-        'prefix' => 'flows',
+        'prefix' => 'flows/{flow}',
         'as'     => 'flows.',
     ], function () {
-        Route::put('{flow}/submit', [FlowController::class, 'submit'])->name('submit');
-        Route::put('{flow}/cancel', [FlowController::class, 'cancel'])->name('cancel');
+        Route::put('submit', [FlowController::class, 'submit'])->name('submit');
+        Route::put('cancel', [FlowController::class, 'cancel'])->name('cancel');
 
         Route::group([
-            'prefix' => 'nodes',
+            'prefix' => 'nodes/{node}',
             'as'     => 'nodes.',
         ], function () {
 
             Route::group([
-                'prefix' => 'tasks',
+                'prefix' => 'tasks/{task}',
                 'as'     => 'tasks.',
             ], function () {
-                Route::put('{task}/approve', [FlowNodeTaskController::class, 'approve'])->name('approve');
+                Route::put('approve', [FlowNodeTaskController::class, 'approve'])->name('approve');
             });
         });
     });

@@ -69,42 +69,4 @@ class FlowTemplateRepository extends BaseRepository
             'status' => StatusEnum::DISABLE->value,
         ]);
     }
-
-    /**
-     * @param  string  $id
-     * @param  array  $inputs
-     * @return bool
-     */
-    public function update(string $id, array $inputs): bool
-    {
-        if (empty($id) || empty($inputs)) {
-            throw new InvalidArgumentException('参数错误');
-        }
-
-        $model = $this->query()->findOrFail($id);
-
-        return $model->update([
-            'name'   => Arr::get($inputs, 'name'),
-            'remark' => Arr::get($inputs, 'remark', ''),
-            'status' => StatusEnum::DISABLE->value,
-        ]);
-    }
-
-    /**
-     * @param  string  $id
-     * @param  array  $inputs
-     * @return bool
-     */
-    public function status(string $id, array $inputs): bool
-    {
-        if (empty($id) || empty($inputs)) {
-            throw new InvalidArgumentException('参数错误');
-        }
-
-        $model = $this->query()->findOrFail($id);
-
-        return $model->update([
-            'status' => Arr::get($inputs, 'status'),
-        ]);
-    }
 }
